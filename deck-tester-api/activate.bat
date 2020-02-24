@@ -1,0 +1,1 @@
+RUN "deck-tester-api-env/Scripts/activate"
