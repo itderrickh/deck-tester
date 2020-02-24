@@ -1,0 +1,9 @@
+<i class="sprite" (click)="openEditor($event)">
+	<img src="assets/sprites/{{sprite}}.png" />
+</i>
+
+<div class="sprite-picker" [ngClass]="{ 'open': open }" [ngStyle]="{ 'left.px': openPosition[0], 'top.px': openPosition[1] }">
+	<i *ngFor="let number of spriteRange" (click)="selectSprite(number)">
+		<img src="assets/sprites/{{number}}.png" />
+	</i>
+</div>

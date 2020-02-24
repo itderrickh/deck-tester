@@ -1,0 +1,46 @@
+<div style="text-align: center; margin-top: 10px">
+	<mat-form-field>
+		<input type="text" autocomplete="off" placeholder="Filter" matInput [(ngModel)]="filterName" />
+	</mat-form-field>
+</div>
+
+<div *ngFor="let deck of decks | containsName: filterName" class="deck-container">
+	<a [routerLink]="['deck', deck.id]">
+		<mat-card>
+			<mat-card-title>
+				{{deck.name}}
+			</mat-card-title>
+
+			<mat-card-subtitle>
+				{{deck.description}}
+			</mat-card-subtitle>
+
+			<mat-card-content>
+				<span *ngIf="deck.icons && deck.icons.length > 0">
+					<img *ngFor="let icon of deck.icons" src="/assets/sprites/{{icon}}.png" [alt]="deck.name">
+				</span>
+				<div>
+					{{deck.notes}}
+				</div>
+				<div>
+					{{deck.getTotalWins()}}-{{deck.getTotalLosses()}}-{{deck.getTotalTies()}}
+				</div>
+			</mat-card-content>
+
+			<mat-card-footer>
+
+			</mat-card-footer>
+		</mat-card>
+	</a>
+</div>
+
+<div (click)="addDeckOpen()" class="deck-container">
+	<mat-card>
+		<mat-card-title>
+			Add Deck
+		</mat-card-title>
+		<mat-card-content style="text-align: center">
+			<img style="height: 80px;" src="assets/add-icon.svg" />
+		</mat-card-content>
+	</mat-card>
+</div>

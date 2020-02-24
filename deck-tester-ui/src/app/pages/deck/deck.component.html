@@ -1,0 +1,104 @@
+<mat-card *ngIf="deck">
+	<mat-card-title>
+		<div style="height: 100%; vertical-align: middle;">
+			{{deck.name}}
+		</div>
+		<div style="display: inline-block; height: 100%;" *ngIf="deck.icons && deck.icons.length > 0">
+			<sprite-picker *ngFor="let icon of deck.icons; index as i" [sprite]="icon"
+				(spriteChange)="iconChange($event, i)"></sprite-picker>
+		</div>
+		<div style="display: inline-block; height: 100%; vertical-align: top;">
+			<button mat-raised-button color="primary" (click)="addIcon()"
+				style="margin-left: 12px; margin-right: 12px;">+</button>
+		</div>
+	</mat-card-title>
+
+	<mat-card-subtitle>
+		<mat-form-field style="width: 100%;">
+			<textarea (change)="updateProperty($event, 'description')" matInput cdkTextareaAutosize
+				#autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" placeholder="Description"
+				[(ngModel)]="deck.description"></textarea>
+		</mat-form-field>
+	</mat-card-subtitle>
+
+	<mat-card-content>
+		<div>
+			<div style="float: left;">
+				<mat-form-field>
+					<input matInput type="text" autocomplete="off" [(ngModel)]="matchupFilter" placeholder="Filter" />
+				</mat-form-field>
+			</div>
+			<div style="float: right;">
+				<mat-form-field>
+					<input matInput type="text" autocomplete="off" [(ngModel)]="newMatchup" placeholder="New Matchup" />
+				</mat-form-field>
+
+				<button mat-raised-button color="primary" (click)="addMatchup()"
+					style="margin-left: 12px; margin-right: 12px;">+</button>
+			</div>
+
+		</div>
+		<table class="mat-table">
+			<thead>
+				<tr class="mat-header-row">
+					<th class="mat-header-cell">Deck</th>
+					<th class="mat-header-cell">Wins</th>
+					<th class="mat-header-cell">Losses</th>
+					<th class="mat-header-cell">Ties</th>
+					<th class="mat-header-cell">Notes</th>
+					<th class="mat-header-cell"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let matchup of deck.matchups | keyvalue | keyContains: matchupFilter" class="mat-row">
+					<td class="mat-cell">
+						<mat-form-field>
+							<input matInput placeholder="Deck" autocomplete="off" type="text"
+								[(ngModel)]="matchup.key" />
+						</mat-form-field>
+					</td>
+					<td class="mat-cell">
+						<mat-form-field>
+							<input matInput placeholder="Wins"
+								(change)="updateMatchup($event, matchup.key, 'wins', 'number')" autocomplete="off"
+								type="number" [(ngModel)]="matchup.value.w" />
+						</mat-form-field>
+					</td>
+					<td class="mat-cell">
+						<mat-form-field>
+							<input matInput placeholder="Losses"
+								(change)="updateMatchup($event, matchup.key, 'losses', 'number')" type="number"
+								autocomplete="off" [(ngModel)]="matchup.value.l" />
+						</mat-form-field>
+					</td>
+					<td class="mat-cell">
+						<mat-form-field>
+							<input matInput placeholder="Ties"
+								(change)="updateMatchup($event, matchup.key, 'ties', 'number')" type="number"
+								autocomplete="off" [(ngModel)]="matchup.value.t" />
+						</mat-form-field>
+					</td>
+					<td class="mat-cell">
+						<mat-form-field style="width: 100%;">
+							<input matInput placeholder="Notes"
+								(change)="updateMatchup($event, matchup.key, 'notes', 'text')" type="text"
+								autocomplete="off" [(ngModel)]="matchup.value.n" />
+						</mat-form-field>
+					</td>
+					<td class="mat-cell">
+						<button mat-raised-button color="primary" (click)="removeMatchup(matchup.key)">X</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<mat-form-field style="width: 100%; margin-top: 40px;">
+			<textarea (change)="updateProperty($event, 'decklist')" matInput cdkTextareaAutosize
+				#autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" placeholder="Sample Decklist"
+				[(ngModel)]="deck.decklist" style="width: 100%;"></textarea>
+		</mat-form-field>
+	</mat-card-content>
+
+	<mat-card-footer>
+		<button mat-raised-button color="primary" (click)="deleteDeck()">Delete Deck</button>
+	</mat-card-footer>
+</mat-card>
